@@ -1,11 +1,11 @@
 // use std::fmt;
+pub type Player = usize;
 
-const PLAYER_1: usize = 1;
-const PLAYER_2: usize = 2;
+const PLAYER_1: Player = 1;
+const PLAYER_2: Player = 2;
 const WIDTH   : usize = 7;
 const HEIGHT  : usize = 6;
 
-pub type Player = usize; //player == 1 or 2
 
 pub struct ConnectFour {
 	board: [[usize; HEIGHT]; WIDTH],
