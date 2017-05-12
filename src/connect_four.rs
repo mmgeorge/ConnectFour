@@ -20,23 +20,36 @@ impl connect_four {
 		}
 	}
 
-	// pub fn insert(&mut self, col: usize) -> Result<(), &'static str> {
-	// 	// if isValidMove(col) {
-	// 	if col <= 6 {
-	// 		if self.player_1_turn {
-	// 			self.board[col](PLAYER_1);
-	// 		} else {
-	// 			self.board[col].push(PLAYER_2);
-	// 		}
-	// 		self.change_turn();
-	// 		Ok(())
-	// 	} else {
-	// 		Err("invalid move")
-	// 	}
-	// }
+	pub fn insert(&mut self, col: usize) -> Result<(), &'static str> {
+		// if isValidMove(col) {
+		if col <= 6 {
+			let row_index = find_col_height(col);
+			// Don't need to check if row_index is valid because of isValidMove check
+			if self.player_1_turn {
+				self.board[col][row_index] = PLAYER_1;
+			} else {
+				self.board[col][row_index] = PLAYER_2;
+			}
+			self.change_turn();
+			Ok(())
+		} else {
+			Err("invalid move")
+		}
+	}
 
 	fn change_turn(&mut self) {
 		self.player_1_turn = !self.player_1_turn;
+	}
+
+	// Returns first empty spot in column
+	fn find_col_height(&self, col_index: usize) -> usize {
+		let column = self.board[col_index];
+		for i in 0..HEIGHT {
+			if column[i] == 0 {
+				return i;
+			}
+		}
+		HEIGHT + 1
 	}
 	//is game done - Jeanette
 	//insert - Kevin
