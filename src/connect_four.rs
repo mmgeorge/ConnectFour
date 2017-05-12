@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 // use std::fmt;
 pub type Player = usize;
+=======
+use std::fmt;
+>>>>>>> 9e8a6da21227b71fcb0a8a4448b5704843eb3c56
 
 const PLAYER_1: Player = 1;
 const PLAYER_2: Player = 2;
@@ -7,7 +11,7 @@ const WIDTH   : usize = 7;
 const HEIGHT  : usize = 6;
 
 
-pub struct ConnectFour {
+pub struct Connect_Four {
 	board: [[usize; HEIGHT]; WIDTH],
 	player_1_turn: bool,
 	
@@ -17,33 +21,50 @@ pub struct ConnectFour {
 //switch player (concurrency) - Kevin
 //isValidMove (check if col is full or col is between 0-7 exclusive) - David
 
-impl ConnectFour {
+impl Connect_Four {
 	pub fn new() -> Self {
 		let new_board = [[0; HEIGHT]; WIDTH];
-		ConnectFour {
+		Connect_Four {
 			board: new_board,
 			player_1_turn: true,
 		}
 	}
 
-	// pub fn insert(&mut self, col: usize) -> Result<(), &'static str> {
-	// 	// if isValidMove(col) {
-	// 	if col <= 6 {
-	// 		if self.player_1_turn {
-	// 			self.board[col](PLAYER_1);
-	// 		} else {
-	// 			self.board[col].push(PLAYER_2);
-	// 		}
-	// 		self.change_turn();
-	// 		Ok(())
-	// 	} else {
-	// 		Err("invalid move")
-	// 	}
-	// }
+	pub fn insert(&mut self, col_index: usize) -> Result<(), &'static str> {
+		// if isValidMove(col_index) {
+		if col_index <= WIDTH {
+			let row_index = self.find_col_height(col_index);
+			// Temp row_index before isValidMove is implemented
+			if row_index <= HEIGHT {
+				if self.player_1_turn {
+					self.board[col_index][row_index] = PLAYER_1;
+				} else {
+					self.board[col_index][row_index] = PLAYER_2;
+				}
+				self.change_turn();
+				()
+			} 
+			Err("invalid move, row index invalid")
+		} else {
+			Err("invalid move, column index invalid")
+		}
+	}
 
 	fn change_turn(&mut self) {
 		self.player_1_turn = !self.player_1_turn;
 	}
+
+	// Returns first empty spot in column
+	fn find_col_height(&self, col_index: usize) -> usize {
+		let column = self.board[col_index];
+		for i in 0..HEIGHT {
+			if column[i] == 0 {
+				return i;
+			}
+		}
+		HEIGHT + 1
+	}
+
 	//is game done - Jeanette
 	pub fn is_winner(self, player: Player) -> bool {
 		let mut connected;
@@ -150,7 +171,35 @@ impl ConnectFour {
 			}
 		}
 
-		return false;
+		false
+	}
+
+	// isValidMove (check if col is full or col is between 0-7 exclusive) - David
+	// Not a public function -- used by insert to indicate if it is a valid move or not
+	// insert handles the response to the user 
+	fn is_valid_move(&self, column: usize, index: usize) -> bool {
+
+		// Case 1: move is not on the board 
+		if column > 7 || index > 6 || column < 0 || index < 0 {
+			return false 
+		}
+
+		// Case 2: check if column is full or index is occupied 
+		if self.board[column][7] != 0  || self.board[column][index] != 0 {
+			return false 
+		}
+
+		true
+	}
+
+	pub fn printer(&self) {
+		println!("{}", self);
+		if self.player_1_turn {
+    		println!("{}", "Player 1's Turn");
+    	} else {
+    		println!("{}", "Player 2's Turn");
+    	}
+
 	}
 	
 }
@@ -158,15 +207,17 @@ impl ConnectFour {
 
 #[cfg(test)]
 mod insert_test {
-	use super::ConnectFour;
+	use super::Connect_Four;
 	#[test] 
 	fn column_too_high() {
 		
 	}
 
 	fn validate_insert() {
-		let mut game = ConnectFour::new();
+		let mut game = Connect_Four::new();
 	}
+
+	
 }
 
 #[cfg(test)]
@@ -186,10 +237,39 @@ mod is_winner_test {
 }
 
 //David
-// impl fmt::Debug for connect_four {
-// 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-// 		for _x in 0..7 {
-// 			write!(f, "{}", self.board);
-// 		}
-//     }
-// }
+impl fmt::Display for Connect_Four {
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		let mut ret_str = String::from("\n");
+
+		for x in 0..WIDTH {
+			ret_str.push_str("|");
+			for index in &self.board[x] {
+				if *index == 1 { ret_str.push_str(" x |") }
+				else if *index == 2  { ret_str.push_str(" o |") }
+				else { ret_str.push_str("   |") }
+			}
+			ret_str.push_str("\n");
+		}
+		ret_str.push_str("| - | - | - | - | - | - |"); // add the bottom of the board
+		write!(f, "{}", ret_str)
+    }
+}
+
+mod format_tests {
+	use super::*;
+
+	// this test is just to see the printed output 
+	// if you run : cargo test -- --nocapture 
+	// it displays the standard output
+	
+	#[test]
+    fn display_empty_board() {
+    	let board = Connect_Four::new();
+    	println!("{}", board);
+    	if board.player_1_turn {
+    		println!("{}", "Player 1's Turn");
+    	} else {
+    		println!("{}", "Player 2's Turn");
+    	}
+    }
+}
