@@ -1,20 +1,26 @@
-use std::fmt;
+// use std::fmt;
 
 const PLAYER_1: usize = 1;
 const PLAYER_2: usize = 2;
 const WIDTH   : usize = 7;
 const HEIGHT  : usize = 6;
 
+pub type Player = usize; //player == 1 or 2
 
-pub struct connect_four {
+pub struct ConnectFour {
 	board: [[usize; HEIGHT]; WIDTH],
 	player_1_turn: bool,
+	
 }
 
-impl connect_four {
+//insert - Kevin
+//switch player (concurrency) - Kevin
+//isValidMove (check if col is full or col is between 0-7 exclusive) - David
+
+impl ConnectFour {
 	pub fn new() -> Self {
 		let new_board = [[0; HEIGHT]; WIDTH];
-		connect_four {
+		ConnectFour {
 			board: new_board,
 			player_1_turn: true,
 		}
@@ -52,22 +58,127 @@ impl connect_four {
 		HEIGHT + 1
 	}
 	//is game done - Jeanette
-	//insert - Kevin
-	//switch player (concurrency) - Kevin
-	//isValidMove (check if col is full or col is between 0-7 exclusive) - David
+	pub fn is_winner(self, player: Player) -> bool {
+		let mut connected;
+		for col in 0..WIDTH {
+			connected = 0;
+			for row in 0..HEIGHT {
+				if connected == 4 {
+					return true;
+				}
+				if self.board[col][row] == player {
+					connected += 1;
+				}
+				else {
+					connected = 0;
+				}
+			}
+		}
+
+		for row in 0..HEIGHT {
+			connected = 0;
+			for col in 0..WIDTH {
+				if connected == 4 {
+					return true;
+				}
+				if self.board[col][row] == player {
+					connected += 1;
+				}
+				else {
+					connected = 0;
+				}
+			}
+		}
+
+		//DIAGONALS
+		for row in 0..WIDTH {
+			connected = 0;
+			for diag in 0..WIDTH {
+				if connected == 4 {
+					return true;
+				}
+				if row + diag < HEIGHT {
+					if self.board[diag][row+diag] == player {
+						connected += 1;
+					} else {
+						connected = 0;
+					}
+				} else {
+					break;
+				}
+			}
+		}
+
+		for row in 0..WIDTH {
+			connected = 0;
+			for diag in 0..WIDTH {
+				if connected == 4 {
+					return true;
+				}
+				if row - diag >= 0 {
+					if self.board[diag][row-diag] == player {
+						connected += 1;
+					} else {
+						connected = 0;
+					}
+				} else {
+					break;
+				}
+			}
+		}
+
+		for col in 0..HEIGHT {
+			connected = 0;
+			for diag in 0..HEIGHT {
+				if connected == 4 {
+					return true;
+				}
+				if col + diag < WIDTH {
+					if self.board[col+diag][diag] == player {
+						connected += 1;
+					} else {
+						connected = 0;
+					}
+				} else {
+					break;
+				}
+			}
+		}
+
+		for col in 0..HEIGHT {
+			connected = 0;
+			for diag in 0..HEIGHT {
+				if connected == 4{
+					return true;
+				}
+				if col - diag >= 0 {
+					if self.board[col-diag][diag] == player {
+						connected += 1;
+					} else {
+						connected = 0;
+					}
+				} else {
+					break;
+				}
+			}
+		}
+
+		return false;
+	}
+	
 }
 
 
 #[cfg(test)]
 mod insert_test {
-	use super::connect_four;
+	use super::ConnectFour;
 	#[test] 
 	fn column_too_high() {
 		
 	}
 
 	fn validate_insert() {
-		let mut game = connect_four::new();
+		let mut game = ConnectFour::new();
 	}
 }
 
