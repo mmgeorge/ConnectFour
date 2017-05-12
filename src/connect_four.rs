@@ -1,13 +1,16 @@
 // use std::fmt;
 
-const WIDTH : usize = 7;
-const HEIGHT: usize = 6;
+const PLAYER_1: usize = 1;
+const PLAYER_2: usize = 2;
+const WIDTH   : usize = 7;
+const HEIGHT  : usize = 6;
 
 pub type Player = usize; //player == 1 or 2
 
 pub struct ConnectFour {
-	board: Vec<Vec<Player>>,
+	board: [[usize; HEIGHT]; WIDTH],
 	player_1_turn: bool,
+	
 }
 
 //insert - Kevin
@@ -16,21 +19,31 @@ pub struct ConnectFour {
 
 impl ConnectFour {
 	pub fn new() -> Self {
-		let mut new_board = Vec::new();
-		let mut new_col;
-		for _x in 0..WIDTH {
-			new_col = Vec::new();
-			for _y in 0..HEIGHT {
-				new_col.push(0);
-			}
-			new_board.push(new_col);
-		}
+		let new_board = [[0; HEIGHT]; WIDTH];
 		ConnectFour {
 			board: new_board,
 			player_1_turn: true,
 		}
 	}
 
+	// pub fn insert(&mut self, col: usize) -> Result<(), &'static str> {
+	// 	// if isValidMove(col) {
+	// 	if col <= 6 {
+	// 		if self.player_1_turn {
+	// 			self.board[col](PLAYER_1);
+	// 		} else {
+	// 			self.board[col].push(PLAYER_2);
+	// 		}
+	// 		self.change_turn();
+	// 		Ok(())
+	// 	} else {
+	// 		Err("invalid move")
+	// 	}
+	// }
+
+	fn change_turn(&mut self) {
+		self.player_1_turn = !self.player_1_turn;
+	}
 	//is game done - Jeanette
 	pub fn is_winner(self, player: Player) -> bool {
 		let mut connected;
@@ -142,6 +155,19 @@ impl ConnectFour {
 	
 }
 
+
+#[cfg(test)]
+mod insert_test {
+	use super::ConnectFour;
+	#[test] 
+	fn column_too_high() {
+		
+	}
+
+	fn validate_insert() {
+		let mut game = ConnectFour::new();
+	}
+}
 
 //David
 // impl fmt::Debug for connect_four {
