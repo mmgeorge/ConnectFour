@@ -102,7 +102,8 @@ impl ConnectFour {
 				if connected == 4 {
 					return true;
 				}
-				if row - diag >= 0 {
+				println!("hey4");
+				if row >= diag && (diag == 0 && row < HEIGHT) {
 					if self.board[diag][row-diag] == player {
 						connected += 1;
 					} else {
@@ -113,7 +114,6 @@ impl ConnectFour {
 				}
 			}
 		}
-
 		for col in 0..HEIGHT {
 			connected = 0;
 			for diag in 0..HEIGHT {
@@ -138,7 +138,7 @@ impl ConnectFour {
 				if connected == 4{
 					return true;
 				}
-				if col - diag >= 0 {
+				if col >= diag && (diag == 0 && col < WIDTH) {
 					if self.board[col-diag][diag] == player {
 						connected += 1;
 					} else {
@@ -167,6 +167,22 @@ mod insert_test {
 	fn validate_insert() {
 		let mut game = ConnectFour::new();
 	}
+}
+
+#[cfg(test)]
+mod is_winner_test {
+	use super::ConnectFour;
+
+	#[test]
+	fn no_winner() {
+		let board = ConnectFour::new();
+		assert_eq!(false, board.is_winner(1));
+	}
+
+	// #[test]
+	// fn yes_winner() {
+	// 	let board = ConnectFour::new();
+	// }
 }
 
 //David
