@@ -1,4 +1,4 @@
-// use std::fmt;
+use std::fmt;
 
 const PLAYER_1: usize = 1;
 const PLAYER_2: usize = 2;
@@ -26,20 +26,23 @@ impl ConnectFour {
 		}
 	}
 
-	pub fn insert(&mut self, col: usize) -> Result<(), &'static str> {
-		// if isValidMove(col) {
-		if col <= 6 {
-			let row_index = find_col_height(col);
-			// Don't need to check if row_index is valid because of isValidMove check
-			if self.player_1_turn {
-				self.board[col][row_index] = PLAYER_1;
-			} else {
-				self.board[col][row_index] = PLAYER_2;
-			}
-			self.change_turn();
-			Ok(())
+	pub fn insert(&mut self, col_index: usize) -> Result<(), &'static str> {
+		// if isValidMove(col_index) {
+		if col_index <= WIDTH {
+			let row_index = self.find_col_height(col_index);
+			// Temp row_index before isValidMove is implemented
+			if row_index <= HEIGHT {
+				if self.player_1_turn {
+					self.board[col_index][row_index] = PLAYER_1;
+				} else {
+					self.board[col_index][row_index] = PLAYER_2;
+				}
+				self.change_turn();
+				()
+			} 
+			Err("invalid move, row index invalid")
 		} else {
-			Err("invalid move")
+			Err("invalid move, column index invalid")
 		}
 	}
 
@@ -183,10 +186,11 @@ mod insert_test {
 }
 
 //David
-// impl fmt::Debug for connect_four {
+// impl fmt::Debug for ConnectFour {
 // 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-// 		for _x in 0..7 {
-// 			write!(f, "{}", self.board);
+// 		for i in 0..WIDTH {
+// 			write!(f, "{:?}", self.board[i]);
 // 		}
+		
 //     }
 // }
