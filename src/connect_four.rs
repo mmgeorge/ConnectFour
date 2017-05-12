@@ -166,7 +166,17 @@ impl ConnectFour {
 			}
 		}
 
-		return false;
+		false
+	}
+
+	pub fn printer(&self) {
+		println!("{}", self);
+		if self.player_1_turn {
+    		println!("{}", "Player 1's Turn");
+    	} else {
+    		println!("{}", "Player 2's Turn");
+    	}
+
 	}
 	
 }
@@ -186,11 +196,39 @@ mod insert_test {
 }
 
 //David
-// impl fmt::Debug for ConnectFour {
-// 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-// 		for i in 0..WIDTH {
-// 			write!(f, "{:?}", self.board[i]);
-// 		}
-		
-//     }
-// }
+impl fmt::Display for connect_four {
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		let mut ret_str = String::from("");
+		for x in 0..7 {
+			ret_str.push_str("|");
+			for index in &self.board[x] {
+				if *index == 1 { ret_str.push_str("x|") }
+				else if *index == 2  { ret_str.push_str("o|") }
+				else { ret_str.push_str(" |") }
+			}
+			ret_str.push_str("\n");
+		}
+
+		ret_str.push_str(" _ _ _ _ _ _ _"); // add the bottom of the board
+		write!(f, "{}", ret_str)
+    }
+}
+
+mod format_tests {
+	use super::*;
+
+	// this test is just to see the printed output 
+	// if you run : cargo test -- --nocapture 
+	// it displays the standard output
+	
+	#[test]
+    fn display_empty_board() {
+    	let board = connect_four::new();
+    	println!("{}", board);
+    	if board.player_1_turn {
+    		println!("{}", "Player 1's Turn");
+    	} else {
+    		println!("{}", "Player 2's Turn");
+    	}
+    }
+}
