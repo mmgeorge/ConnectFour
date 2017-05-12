@@ -7,7 +7,7 @@ const HEIGHT  : usize = 6;
 
 pub type Player = usize; //player == 1 or 2
 
-pub struct ConnectFour {
+pub struct Connect_Four {
 	board: [[usize; HEIGHT]; WIDTH],
 	player_1_turn: bool,
 	
@@ -17,10 +17,10 @@ pub struct ConnectFour {
 //switch player (concurrency) - Kevin
 //isValidMove (check if col is full or col is between 0-7 exclusive) - David
 
-impl ConnectFour {
+impl Connect_Four {
 	pub fn new() -> Self {
 		let new_board = [[0; HEIGHT]; WIDTH];
-		ConnectFour {
+		Connect_Four {
 			board: new_board,
 			player_1_turn: true,
 		}
@@ -60,6 +60,7 @@ impl ConnectFour {
 		}
 		HEIGHT + 1
 	}
+
 	//is game done - Jeanette
 	pub fn is_winner(self, player: Player) -> bool {
 		let mut connected;
@@ -169,6 +170,24 @@ impl ConnectFour {
 		false
 	}
 
+	// isValidMove (check if col is full or col is between 0-7 exclusive) - David
+	// Not a public function -- used by insert to indicate if it is a valid move or not
+	// insert handles the response to the user 
+	fn is_valid_move(&self, column: usize, index: usize) -> bool {
+
+		// Case 1: move is not on the board 
+		if column > 7 || index > 6 || column < 0 || index < 0 {
+			return false 
+		}
+
+		// Case 2: check if column is full or index is occupied 
+		if self.board[column][7] != 0  || self.board[column][index] != 0 {
+			return false 
+		}
+
+		true
+	}
+
 	pub fn printer(&self) {
 		println!("{}", self);
 		if self.player_1_turn {
@@ -184,32 +203,34 @@ impl ConnectFour {
 
 #[cfg(test)]
 mod insert_test {
-	use super::ConnectFour;
+	use super::Connect_Four;
 	#[test] 
 	fn column_too_high() {
 		
 	}
 
 	fn validate_insert() {
-		let mut game = ConnectFour::new();
+		let mut game = Connect_Four::new();
 	}
+
+	
 }
 
 //David
-impl fmt::Display for connect_four {
+impl fmt::Display for Connect_Four {
 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-		let mut ret_str = String::from("");
-		for x in 0..7 {
+		let mut ret_str = String::from("\n");
+
+		for x in 0..WIDTH {
 			ret_str.push_str("|");
 			for index in &self.board[x] {
-				if *index == 1 { ret_str.push_str("x|") }
-				else if *index == 2  { ret_str.push_str("o|") }
-				else { ret_str.push_str(" |") }
+				if *index == 1 { ret_str.push_str(" x |") }
+				else if *index == 2  { ret_str.push_str(" o |") }
+				else { ret_str.push_str("   |") }
 			}
 			ret_str.push_str("\n");
 		}
-
-		ret_str.push_str(" _ _ _ _ _ _ _"); // add the bottom of the board
+		ret_str.push_str("| - | - | - | - | - | - |"); // add the bottom of the board
 		write!(f, "{}", ret_str)
     }
 }
@@ -223,7 +244,7 @@ mod format_tests {
 	
 	#[test]
     fn display_empty_board() {
-    	let board = connect_four::new();
+    	let board = Connect_Four::new();
     	println!("{}", board);
     	if board.player_1_turn {
     		println!("{}", "Player 1's Turn");
