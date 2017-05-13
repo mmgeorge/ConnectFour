@@ -1,16 +1,13 @@
-<<<<<<< HEAD
-// use std::fmt;
-pub type Player = usize;
-=======
 use std::fmt;
->>>>>>> 9e8a6da21227b71fcb0a8a4448b5704843eb3c56
+
+pub type Player = usize;
 
 const PLAYER_1: Player = 1;
 const PLAYER_2: Player = 2;
 const WIDTH   : usize = 7;
 const HEIGHT  : usize = 6;
 
-
+#[derive(Clone)]
 pub struct Connect_Four {
 	board: [[usize; HEIGHT]; WIDTH],
 	player_1_turn: bool,
@@ -34,6 +31,7 @@ impl Connect_Four {
 		// if isValidMove(col_index) {
 		if col_index <= WIDTH {
 			let row_index = self.find_col_height(col_index);
+			println!("{}", row_index);
 			// Temp row_index before isValidMove is implemented
 			if row_index <= HEIGHT {
 				if self.player_1_turn {
@@ -123,7 +121,6 @@ impl Connect_Four {
 				if connected == 4 {
 					return true;
 				}
-				println!("hey4");
 				if row >= diag && (diag == 0 && row < HEIGHT) {
 					if self.board[diag][row-diag] == player {
 						connected += 1;
@@ -180,13 +177,13 @@ impl Connect_Four {
 	fn is_valid_move(&self, column: usize, index: usize) -> bool {
 
 		// Case 1: move is not on the board 
-		if column > 7 || index > 6 || column < 0 || index < 0 {
-			return false 
+		if column > WIDTH || index > HEIGHT || column < 0 || index < 0 {
+			return false;
 		}
 
 		// Case 2: check if column is full or index is occupied 
-		if self.board[column][7] != 0  || self.board[column][index] != 0 {
-			return false 
+		if self.board[column][HEIGHT-1] != 0  || self.board[column][index] != 0 {
+			return false;
 		}
 
 		true
@@ -222,18 +219,64 @@ mod insert_test {
 
 #[cfg(test)]
 mod is_winner_test {
-	use super::ConnectFour;
+	use super::Connect_Four;
 
 	#[test]
 	fn no_winner() {
-		let board = ConnectFour::new();
+		let board = Connect_Four::new();
 		assert_eq!(false, board.is_winner(1));
 	}
 
-	// #[test]
-	// fn yes_winner() {
-	// 	let board = ConnectFour::new();
-	// }
+	#[test]
+	fn player_1_winner() {
+		let mut board = Connect_Four::new();
+		board.insert(1); //player 1
+		board.insert(0); //player 2
+		board.insert(1); //player 1
+		board.insert(0); //player 2
+		board.insert(1); //player 1
+		board.insert(0); //player 2
+		board.insert(1); //player 1
+		//player one wins
+		assert_eq!(true, board.clone().is_winner(1));
+		assert_eq!(false, board.clone().is_winner(2));
+	}
+
+	#[test]
+	fn player_2_winner() {
+		let mut board = Connect_Four::new();
+		board.insert(0); //player 1
+		board.insert(1); //player 2
+		board.insert(0); //player 1
+		board.insert(2); //player 2
+		board.insert(1); //player 1
+		board.insert(3); //player 2
+		board.insert(1); //player 1
+		board.insert(4); //player 2
+		//player two wins
+		assert_eq!(true, board.clone().is_winner(2));
+		assert_eq!(false, board.clone().is_winner(1));
+	}
+
+	#[test]
+	fn player_1_diag_win() {
+		let mut board = Connect_Four::new();
+		board.insert(0); //player 1
+		board.insert(1); //player 2
+		board.insert(1); //player 1
+		board.insert(2); //player 2
+		board.insert(2); //player 1
+		board.insert(3); //player 2
+		board.insert(2); //player 1
+		board.insert(3); //player 2
+		board.insert(3); //player 1
+		board.insert(5); //player 2
+		board.insert(3); //player 1
+		//player 1 wins
+		assert_eq!(true, board.clone().is_winner(1));
+		assert_eq!(false, board.clone().is_winner(2));
+
+	}
 }
 
 //David
