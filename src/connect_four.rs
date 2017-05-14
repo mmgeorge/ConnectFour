@@ -214,8 +214,9 @@ mod insert_test {
 		let mut game = Connect_Four::new();
 	}
 
-	
+
 }
+
 
 #[cfg(test)]
 mod is_winner_test {
@@ -279,24 +280,32 @@ mod is_winner_test {
 	}
 }
 
-//David
+
+
+
 impl fmt::Display for Connect_Four {
 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
 		let mut ret_str = String::from("\n");
+		let mut row_offset = HEIGHT-1;
 
-		for x in 0..WIDTH {
+		for row in 0..HEIGHT {
 			ret_str.push_str("|");
-			for index in &self.board[x] {
+			for col in 0..WIDTH-1 {
+				let index = &self.board[col][row_offset]; // correlates to x,y coord 
 				if *index == 1 { ret_str.push_str(" x |") }
 				else if *index == 2  { ret_str.push_str(" o |") }
 				else { ret_str.push_str("   |") }
+				
 			}
+			if row_offset > 0 { row_offset -=  1; }
 			ret_str.push_str("\n");
 		}
 		ret_str.push_str("| - | - | - | - | - | - |"); // add the bottom of the board
 		write!(f, "{}", ret_str)
     }
 }
+
+
 
 mod format_tests {
 	use super::*;
@@ -307,7 +316,10 @@ mod format_tests {
 	
 	#[test]
     fn display_empty_board() {
-    	let board = Connect_Four::new();
+    	let mut board = Connect_Four::new();
+    	let res = board.insert(0);
+    	let res_2 = board.insert(0);
+    	let res_3 = board.insert(1);
     	println!("{}", board);
     	if board.player_1_turn {
     		println!("{}", "Player 1's Turn");
