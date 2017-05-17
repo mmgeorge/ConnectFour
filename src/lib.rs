@@ -3,10 +3,9 @@
 #[cfg(test)]
 #[macro_use]
 
-pub mod connect_four;
+pub mod Connect_Four;
 mod tests {
     #[test]
     fn it_works() {
-    	// let mut cfboard = connect_four::new();
     }
 }

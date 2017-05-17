@@ -1,4 +1,7 @@
 use std::fmt;
+use std::str::FromStr;
+use std::io::{Read,BufReader,BufRead,stdout,Write,stdin};
+
 
 pub type Player = usize;
 
@@ -14,9 +17,15 @@ pub struct Connect_Four {
 	
 }
 
-//insert - Kevin
-//switch player (concurrency) - Kevin
-//isValidMove (check if col is full or col is between 0-7 exclusive) - David
+pub fn read_input<R: Read>(reader: R) -> usize {
+	let mut lines = BufReader::new(reader).lines();
+
+	while let Some(Ok(line)) = lines.next() {
+		return usize::from_str(&line).unwrap();
+	}
+
+	0
+}
 
 impl Connect_Four {
 	pub fn new() -> Self {
@@ -26,6 +35,23 @@ impl Connect_Four {
 			player_1_turn: true,
 		}
 	}
+
+	pub fn play_game(&mut self) {
+		let mut game_over = false;
+		println!("Player 1 goes first!");
+		while !game_over {
+			println!("Please enter the column number");
+			let turn = read_input(stdin());
+			self.insert(turn).unwrap();
+			if self.clone().is_winner(PLAYER_1) || self.clone().is_winner(PLAYER_2) {
+				game_over = true;
+			}
+			println!("{}", self);
+		}
+		println!("GAME OVER!");
+	}
+
+	
 
 	pub fn insert(&mut self, col_index: usize) -> Result<(), &'static str> {
 		// if isValidMove(col_index) {
@@ -63,7 +89,6 @@ impl Connect_Four {
 		HEIGHT + 1
 	}
 
-	//is game done - Jeanette
 	pub fn is_winner(self, player: Player) -> bool {
 		let mut connected;
 		for col in 0..WIDTH {
@@ -171,7 +196,6 @@ impl Connect_Four {
 		false
 	}
 
-	// isValidMove (check if col is full or col is between 0-7 exclusive) - David
 	// Not a public function -- used by insert to indicate if it is a valid move or not
 	// insert handles the response to the user 
 	fn is_valid_move(&self, column: usize, index: usize) -> bool {
