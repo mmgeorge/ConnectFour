@@ -17,6 +17,11 @@ pub struct Connect_Four {
 	
 }
 
+// finish oData library - Matt
+// fix read_input and is_winner, MiniMax - Jeanette
+// GTK client GUI - Kevin & David
+
+// fix read_input
 pub fn read_input<R: Read>(reader: R) -> usize {
 	let mut lines = BufReader::new(reader).lines();
 
@@ -35,6 +40,7 @@ impl Connect_Four {
 			player_1_turn: true,
 		}
 	}
+
 
 	pub fn play_game(&mut self) {
 		let mut game_over = false;
@@ -89,6 +95,7 @@ impl Connect_Four {
 		HEIGHT + 1
 	}
 
+	// fixing is_winner to only check columns that were played
 	pub fn is_winner(self, player: Player) -> bool {
 		let mut connected;
 		for col in 0..WIDTH {
