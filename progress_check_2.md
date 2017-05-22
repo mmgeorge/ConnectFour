@@ -1,5 +1,6 @@
 # Progress Check 2
 
+**For oData service:**
 - Added macro for declaring EntityTypes. Decided this route would allow for a much more efficient representation of entities as opposed to a HashMap. Handles boilerplate needed to expose metadata. For instance:
 ```
 defEntity!(Dog(keys => id) {
@@ -63,10 +64,25 @@ Assuming we have implemented `read_list` for Dogs, then `GET myroot.xyz/apis/dog
 - Added hyper integration (HTTP Server library)
 
 
+- Began developing the GUI which can be found [here](https://github.com/dwallach1/connect_four_gui). There is currently
+a rough draft of our GUI which uses radio buttons to select which column the user chooses to play. We are going to enhance
+the UI aspect of the GUI as well as implement the actual game funcionality. 
+
+**For ConnectFour:**
+- Player was converted from usize to enum (One, Two, Neither).
+- read_input() was modified to only read one line of input
+- check_valid_move() was modified to check validity of move and return position where move was made
+- More tests were written
+
+**For MiniMax AI:**
+- A preliminary skeleton for the minimax algorithm has been implemented, but may not be finished in time. We will demote this to a reach goal.
+
 ### TODO: 
 - Finish up oData Service core functionality
 - Connect Game to oData Service (likely using a SyncChannel)
-- Finish up GUI
+- Add functionality to the GUI (connect to the oData library and game functionality)
+
+
 
 
 
