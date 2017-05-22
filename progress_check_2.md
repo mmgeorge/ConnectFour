@@ -63,7 +63,7 @@ Assuming we have implemented `read_list` for Dogs, then `GET myroot.xyz/apis/dog
 - Added hyper integration (HTTP Server library)
 
 
-Still TODO: 
+### TODO: 
 - Finish up oData Service core functionality
 - Connect Game to oData Service (likely using a SyncChannel)
 - Finish up GUI
