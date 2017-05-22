@@ -53,7 +53,7 @@ This generates a "descriptor" function which allows access to the EntityDescr fo
  s.start();  
 ```
 
-- This would then allow HTTP requests for myroot.xyz/apis/dog_cafe/. This is still in progress, but <...>/apis/dog_cafe/$metadata would return JSON-formatted CSDL for the available EntitySets (in this case Dogs and Customers), with a description of the allowable types and methods. The service supports JSON only (no XML), and as such we are using the [tenative JSON CSDL proposal](http://docs.oasis-open.org/odata/odata-json-csdl/v4.0/csprd01/odata-json-csdl-v4.0-csprd01.html).
+This would then allow HTTP requests for myroot.xyz/apis/dog_cafe/. This is still in progress, but <...>/apis/dog_cafe/$metadata would return JSON-formatted CSDL for the available EntitySets (in this case Dogs and Customers), with a description of the allowable types and methods. The service supports JSON only (no XML), and as such we are using the [tenative JSON CSDL proposal](http://docs.oasis-open.org/odata/odata-json-csdl/v4.0/csprd01/odata-json-csdl-v4.0-csprd01.html).
 
 Assuming we have implemented `read_list` for Dogs, then `GET myroot.xyz/apis/dog_cafe/Dogs` would drop us into the function we defined in our `impl EntitySet for Dogs`. Otherwise it returns the associated oData error. 
 
