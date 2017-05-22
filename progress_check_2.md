@@ -68,6 +68,8 @@ Assuming we have implemented `read_list` for Dogs, then `GET myroot.xyz/apis/dog
 - Connect Game to oData Service (likely using a SyncChannel)
 - Finish up GUI
 
+GUI can be found at https://github.com/dwallach1/connect_four_gui
+
 
 
 

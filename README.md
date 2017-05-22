@@ -7,3 +7,7 @@ This project also includes an oData service library that is referenced externall
 
 ## Documentation
 [rust-odata](https://mmgeorge.github.io/rust-odata/rust_odata/)
+
+## GUI 
+
+before we combine everything, GUI can be found [here](https://github.com/dwallach1/connect_four_gui).
