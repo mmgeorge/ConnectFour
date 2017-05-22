@@ -74,6 +74,9 @@ the UI aspect of the GUI as well as implement the actual game funcionality.
 - check_valid_move() was modified to check validity of move and return position where move was made
 - More tests were written
 
+**For GUI:**
+- GUI code can be found here (https://github.com/dwallach1/connect_four_gui)
+
 **For MiniMax AI:**
 - A preliminary skeleton for the minimax algorithm has been implemented, but may not be finished in time. We will demote this to a reach goal.
 
