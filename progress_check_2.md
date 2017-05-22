@@ -63,12 +63,17 @@ Assuming we have implemented `read_list` for Dogs, then `GET myroot.xyz/apis/dog
 - Added hyper integration (HTTP Server library)
 
 
+- Began developing the GUI which can be found [here](https://github.com/dwallach1/connect_four_gui). There is currently
+a rough draft of our GUI which uses radio buttons to select which column the user chooses to play. We are going to enhance
+the UI aspect of the GUI as well as implement the actual game funcionality. 
+
+
 ### TODO: 
 - Finish up oData Service core functionality
 - Connect Game to oData Service (likely using a SyncChannel)
-- Finish up GUI
+- Add functionality to the GUI (connect to the oData library and game functionality)
 
-GUI can be found at https://github.com/dwallach1/connect_four_gui
+
 
 
 
